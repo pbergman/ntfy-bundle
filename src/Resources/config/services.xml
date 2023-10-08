@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    
+    <services>
+        <defaults autowire="true" autoconfigure="true"/>
+
+        <prototype namespace="PBergman\Bundle\NtfyBundle\Command\" resource="../../Command/*">
+            <tag name="console.command"/>
+        </prototype>
+
+        <prototype
+                namespace="PBergman\Bundle\NtfyBundle\"
+                resource="../../*"
+                exclude="../../{DependencyInjection}"
+        />
+
+    </services>
+</container>
