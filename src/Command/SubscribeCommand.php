@@ -56,10 +56,15 @@ EOH
         return 0;
     }
 
+    private function getDateTime(int $stamp): \DateTime
+    {
+        return (new \DateTime('@'. $stamp))->setTimezone(new \DateTimeZone(\date_default_timezone_get()));
+    }
+
     private function print(Message $message, int $width, SymfonyStyle $styles, bool $isVerbose)
     {
         $title  = $message->getTitle() ?? '';
-        $date   = (new \DateTime('@'. $message->getTime()))->format('Y-m-d H:i:s');
+        $date   = $this->getDateTime($message->getTime())->format('Y-m-d H:i:s');
         $length = \strlen($title);
 
         if ($length > ($width - 20)) {
@@ -68,7 +73,12 @@ EOH
         }
 
         $styles->title(sprintf('%s%-' . ($width - $length - 20) .  's%s', $title, '', $date));
-        $styles->block(wordwrap($message->getMessage(), $width, "\n", true));
+
+        if ($message-> substr($message->getMessage(), 0, 3) === '```' && substr($message->getMessage(), -3) === '```') {
+            $styles->writeln(trim($message->getMessage(), "`|\n"));
+        } else {
+            $styles->block(wordwrap($message->getMessage(), $width, "\n", true));
+        }
 
         if ($isVerbose) {
             $list = [
