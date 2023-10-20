@@ -74,7 +74,7 @@ EOH
 
         $styles->title(sprintf('%s%-' . ($width - $length - 20) .  's%s', $title, '', $date));
 
-        if ($message-> substr($message->getMessage(), 0, 3) === '```' && substr($message->getMessage(), -3) === '```') {
+        if (substr($message->getMessage(), 0, 3) === '```' && substr($message->getMessage(), -3) === '```') {
             $styles->writeln(trim($message->getMessage(), "`|\n"));
         } else {
             $styles->block(wordwrap($message->getMessage(), $width, "\n", true));
